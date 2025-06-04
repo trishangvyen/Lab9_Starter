@@ -86,7 +86,14 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "43e530a13be04f6d95aa58aa4e853c6f"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+    TrackJS.track('Testing TrackJS!');
+  </script>
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -192,17 +199,13 @@
         console.error('Error in calculation:', error);
         output.innerHTML = 'Error in calculation';
       } finally {
-        console.log('Calculation attempted with:', firstNum, operator, secondNum);
+        console.log('Calculated:', firstNum, operator, secondNum);
       }
     });
 
     window.onerror = function (message, source, lineno, colno, error) {
-      console.log("Global Error Caught!");
+      console.log("Global Error Caught");
       console.log("Message:", message);
-      console.log("Source:", source);
-      console.log("Line:", lineno);
-      console.log("Column:", colno);
-      console.log("Error object:", error);
     };
   </script>
 </body>
