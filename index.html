@@ -102,6 +102,108 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    let groupStarted = false;
+    errorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        switch (btn.textContent) {
+          case 'Console Log':
+            console.log('Console Log Demo');
+            break;
+          case 'Console Error':
+            console.error('Console Error Demo');
+            break;
+          case 'Console Count':
+            console.count('Count Buton');
+            break;
+          case 'Console Warn':
+            console.warn('Console Warn Button');
+            break;
+          case 'Console Assert':
+            const number = 2;
+            console.assert(number === 3, 'This number does not equal 3');
+            break;
+          case 'Console Clear':
+            console.clear();
+            break;
+          case 'Console Dir':
+            console.dir(btn);
+            break;
+          case 'Console dirxml':
+            console.dirxml(btn);
+            break;
+          case 'Console Group Start':
+            if (!groupStarted) {
+              console.group('Group Start');
+              groupStarted = true;
+            }
+            break;
+          case 'Console Group End':
+            if (groupStarted) {
+              console.groupEnd();
+              groupStarted = false;
+            }
+            break;
+          case 'Console Table':
+            console.table([{ Item: 'Apple', Price: 10 }, { Item: 'Banana', Price: 5 }]);
+            break;
+          case 'Start Timer':
+            console.time('Timer');
+            break;
+          case 'End Timer':
+            console.timeEnd('Timer');
+            break;
+          case 'Console Trace':
+            const first = () => { second(); };
+            const second = () => { third(); };
+            const third = () => { fourth(); };
+            const fourth = () => { console.trace(); };
+            first();
+            break;
+          case 'Trigger a Global Error':
+            throw new Error('This is a global error');
+        }
+      });
+    });
+
+    class CalcError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = 'CalcError';
+      }
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let output = document.querySelector('output');
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      let operator = document.querySelector('#operator').value;
+
+      try {
+        if (secondNum === '0' && operator === '/') {
+          throw new CalcError('Division by zero is not allowed');
+      }
+      let result = eval(`${firstNum} ${operator} ${secondNum}`);
+        if (isNaN(result)) {
+          throw new CalcError('Invalid calculation');
+        }
+        output.innerHTML = result;
+      } catch (error) {
+        console.error('Error in calculation:', error);
+        output.innerHTML = 'Error in calculation';
+      } finally {
+        console.log('Calculation attempted with:', firstNum, operator, secondNum);
+      }
+    });
+
+    window.onerror = function (message, source, lineno, colno, error) {
+      console.log("Global Error Caught!");
+      console.log("Message:", message);
+      console.log("Source:", source);
+      console.log("Line:", lineno);
+      console.log("Column:", colno);
+      console.log("Error object:", error);
+    };
   </script>
 </body>
 
